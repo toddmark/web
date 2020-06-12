@@ -12,15 +12,21 @@ session_unset();
   <title>Login</title>
 </head>
 <body>
-  <!-- <?php include 'header.php'; ?> -->
+  <?php include 'header.php'; ?>
   <form action="./movie1.php" method="post">
   <p>your name: <input type="text" name="user" /> </p>
   <p>your password: <input type="password" name="pass" /> </p>
   <p> <input type="submit" name="submit" value="submit" /> </p>
   </form>
   <?php
-    $month = date('D, d, m, y, H,i,s');
+    $month = date('l');
     echo $month;
+
+    $array['a'] = 'todd';
+    $array['b'] = 'mark';
+    $array['c'] = 'robin';
+    sort($array);
+    print_r($array);
   ?>
 </body>
 </html>
