@@ -8,17 +8,16 @@
 </head>
 
 <body>
-  <h3>1</h3>
   <p>
-    月份是
-    <?php  ?>
-  </p>
-  <p
-    本月还剩多少天
+    月份是 <?php echo date("M"); ?>
   </p>
   <p>
-    本年还剩几个月
+  本月还剩多少天: <?php echo date("t") - date("d");  ?>
   </p>
+  <p>
+    本年还剩几个月 <?php echo 12 - date("n"); ?>
+  </p>
+
 </body>
 
 </html>
