@@ -14,7 +14,7 @@
   mysqli_select_db($db, 'moviesite') or die(mysqli_error($db));
 
   $query = 'SELECT
-  movie_name, movie_year, movie_director, movie_leadactor, movie_type
+    movie_id, movie_name, movie_year, movie_director, movie_leadactor, movie_type
   FROM
     movie
   ORDER BY
