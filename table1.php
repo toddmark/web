@@ -73,7 +73,7 @@
         $movietype = get_movietype($movie_type);
         $table .= <<<ENDHTML
         <tr>
-          <td>$movie_name</td>
+          <td><a href="./movie_details.php?movie_id=$movie_id">$movie_name</a></td>
           <td>$movie_year</td>
           <td>$director</td>
           <td>$leadactor</td>
