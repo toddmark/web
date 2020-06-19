@@ -50,13 +50,16 @@ function calculate_diff($takings, $cost)
 $db = mysqli_connect('localhost', 'root', 'root');
 mysqli_select_db($db, 'moviesite') or die(mysqli_error($db));
 
+$movie_id = $_GET['movie_id'] ? $_GET['movie_id'] : 1;
+
+
 $query = 'SELECT
     movie_name, movie_type, movie_year, movie_leadactor,
     movie_director, movie_running_time, movie_cost, movie_takings
     FROM
       movie
     WHERE
-      movie_id = ' . $_GET['movie_id'];
+      movie_id = ' . $movie_id;
 
 $result = mysqli_query($db, $query) or die(mysqli_error($db));
 $row = mysqli_fetch_assoc($result);
@@ -88,17 +91,16 @@ $movie_health = calculate_diff($row['movie_takings'], $row['movie_cost']);
   $query = 'SELECT
   review_movie_id, review_rating,review_comment
   FROM reviews
-  WHERE review_movie_id =' . $_GET['movie_id'] . '
+  WHERE review_movie_id =' . $movie_id . '
   ORDER BY review_date DESC
   ';
 
   $result = mysqli_query($db, $query) or die(mysqli_error($db));
 
   $totalRating = 0;
-  while($row = mysqli_fetch_assoc($result)) {
+  while ($row = mysqli_fetch_assoc($result)) {
     extract($row);
     $totalRating += $review_rating;
-
   }
 
   $averageRating = $totalRating / $result->num_rows;
@@ -157,36 +159,47 @@ $movie_health = calculate_diff($row['movie_takings'], $row['movie_cost']);
 
   <?php
 
+  $orderby = 'review_date DESC';
+  $dateorder = 'DESC';
+
+  if (strtolower($_GET['date']) === 'desc') {
+    $orderby = 'review_date ASC';
+    $dateorder = 'ASC';
+  }
+
   $query = 'SELECT
-  review_movie_id, review_date, reviewer_name, review_comment, review_rating
+    review_movie_id, review_date, reviewer_name, review_comment, review_rating
   FROM
     reviews
   WHERE
-    review_movie_id=' . $_GET['movie_id'] . '
+    review_movie_id=' . $movie_id . '
   ORDER BY
-    review_date DESC';
+    ' . $orderby;
   $result = mysqli_query($db, $query) or die(mysqli_error($db));
   ?>
 
   <table border="1" cellpadding="1" cellspacing="1">
     <tr>
-      <th>Date</th>
+      <th><a href="<?php echo $_SERVER['PHP_SELF'] . '?date=' . $dateorder ?>">Date</a></th>
       <th>Reviewer</th>
       <th>Comments</th>
       <th>Rating</th>
     </tr>
     <?php
+    $i = 0;
     while ($row = mysqli_fetch_assoc($result)) {
+      $i++;
+      $tr = $i%2 == 0 ? '#999' : '#eee';
       extract($row);
       $rating = generate_ratings($row['review_rating']);
       echo <<<ENDHTML
-  <tr>
-    <td>$review_date</td>
-    <td>$reviewer_name</td>
-    <td>$review_comment</td>
-    <td>$rating</td>
-  </tr>
-  ENDHTML;
+        <tr style="background: $tr">
+          <td>$review_date</td>
+          <td>$reviewer_name</td>
+          <td>$review_comment</td>
+          <td>$rating</td>
+        </tr>
+        ENDHTML;
     }
     ?>
   </table>
