@@ -18,11 +18,13 @@
       case 'people':
         $query = 'UPDATE movie SET movie_leadactor = 0 WHERE movie_leadactor = ' . $_GET['id'];
         $result = mysqli_query($db, $query) or die(mysqli_error($db));
+        $query = 'UPDATE movie SET movie_director = 0 WHERE movie_director = ' . $_GET['id'];
+        $result = mysqli_query($db, $query) or die(mysqli_error($db));
         $query = 'DELETE FROM people WHERE people_id='. $_GET['id'];
         $result = mysqli_query($db, $query) or die(mysqli_error($db));
 ?>
-<p>Movie has been deleted.
-  <a href="movie_index.php">Return to index</a>
+<p>People has been deleted.
+  <a href="admin.php">Return to index</a>
 </p>
 <?php
   break;

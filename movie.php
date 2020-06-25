@@ -4,7 +4,9 @@
   if($_GET['action'] == 'edit') {
     $query = 'SELECT * FROM movie WHERE movie_id=' . $_GET['id'];
     $result = mysqli_query($db, $query);
-    extract(mysqli_fetch_assoc($result));
+    $row = mysqli_fetch_assoc($result);
+    extract($row);
+    // var_dump($row);
   } else {
     $movie_name = '';
     $movie_type = 0;
@@ -55,7 +57,11 @@
           <select name="movie_year">
             <?php
               for($yr = date("Y"); $yr >= 1970; $yr--) {
-                echo '<option value="' . $yr .'">' . $yr . '</option>';
+                if($yr == $movie_year) {
+                  echo '<option selected="selected" value="' . $yr .'">' . $yr . '</option>';
+                } else {
+                  echo '<option value="' . $yr .'">' . $yr . '</option>';
+                }
               }
             ?>
           </select>
@@ -70,7 +76,11 @@
               $result = mysqli_query($db, $query);
               while($row = mysqli_fetch_assoc($result)) {
                 extract($row);
-                echo '<option value="' . $people_id .'">' . $people_fullname . '</option>';
+                if($people_id == $movie_leadactor){
+                  echo '<option selected="selected" value="' . $people_id .'">' . $people_fullname . '</option>';
+                } else {
+                  echo '<option value="' . $people_id .'">' . $people_fullname . '</option>';
+                }
               }
             ?>
           </select>
@@ -85,7 +95,11 @@
               $result = mysqli_query($db, $query);
               while($row = mysqli_fetch_assoc($result)) {
                 extract($row);
-                echo '<option value="' . $people_id .'">' . $people_fullname . '</option>';
+                if($movie_director == $people_id) {
+                  echo '<option selected="selected" value="' . $people_id .'">' . $people_fullname . '</option>';
+                } else {
+                  echo '<option value="' . $people_id .'">' . $people_fullname . '</option>';
+                }
               }
             ?>
           </select>
@@ -93,7 +107,12 @@
       </tr>
       <tr>
         <td colspan="2">
-          <input type="submit" value="<?php echo ucfirst($_GET['action']); ?>">
+        <?php
+          if($_GET['action'] == 'edit') {
+            echo '<input type="hidden" value="' . $_GET['id'] . '" name="movie_id" />';
+          }
+        ?>
+          <input type="submit" name="submit" value="<?php echo ucfirst($_GET['action']); ?>">
         </td>
       </tr>
     </table>
