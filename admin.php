@@ -56,6 +56,11 @@ mysqli_select_db($db, 'moviesite') or die(mysqli_error($db));
       }
     ?>
   </table>
+  <pre>
+  <?php
+    var_dump(gd_info());
+  ?>
+  </pre>
 </body>
 
 </html>
