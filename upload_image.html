@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Upload your pic to our site!</title>
 </head>
+
 <body>
   <form action="check_image.php" method="post" enctype="multipart/form-data">
     <table>
@@ -19,7 +21,17 @@
       <tr colspan="2">
         <td>GIF, JPG, PNG</td>
       </tr>
+      <tr>
+        <td>Image Caption</td>
+        <td><input type="text" name="caption" id=""></td>
+      </tr>
+      <tr colspan="2">
+        <td>
+          <input type="submit" value="Upload" name="submit">
+        </td>
+      </tr>
     </table>
   </form>
 </body>
+
 </html>
