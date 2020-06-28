@@ -37,6 +37,7 @@ echo '<pre>';
 var_dump($_FILES['uploadfile']);
 echo '</pre>';
 list($width, $height, $type, $attr) = getimagesize($_FILES['uploadfile']['tmp_name']);
+var_dump($type);
 switch($type) {
   case IMAGETYPE_GIF:
     $image = imagecreatefromgif($_FILES['uploadfile']['tmp_name']) or die('.gif not supported');
@@ -66,13 +67,13 @@ $result = mysqli_query($db, $query) or die(mysqli_error($db));
 
 switch($type) {
   case IMAGETYPE_GIF:
-    imagegif($dir .'/' . $imagename);
+    imagegif($image, $dir .'/' . $imagename);
   break;
   case IMAGETYPE_JPEG:
     imagejpeg($image, $dir .'/' . $imagename);
   break;
   case IMAGETYPE_PNG:
-    imagepng($dir .'/' . $imagename);
+    imagepng($image, $dir .'/' . $imagename);
   break;
 }
 var_dump($dir .'/' . $imagename);
