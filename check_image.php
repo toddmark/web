@@ -167,7 +167,7 @@ if ($_POST['submit'] == 'Save') {
     <!-- <img src="images/<?php echo $imagename; ?>" alt="" style="float: left;"> -->
     <?php
     if ($_POST['submit'] == 'Upload') {
-      $imagename = './image/' . $image_id . '.jpg';
+      $imagename = './images/' . $image_id . '.jpg';
     } else {
       $imagename  = './image_effect.php?id=' . $image_id . '&e=' . $_POST['effect'];
       if(isset($_POST['emb_caption'])) {
