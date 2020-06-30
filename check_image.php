@@ -128,6 +128,16 @@ if ($_POST['submit'] == 'Save') {
   }
 
   // add the logo watermark if requested
+  if(isset($_POST['emb_logo'])) {
+    // determine x and y position to center watermark
+    list($wmk_width, $wmk_height) = getimagesize('./images/logo.png');
+    $x = ($width - $wmk_width) / 2;
+    $y = ($height - $wmk_height) / 2;
+
+    $wmk = imagecreatefrompng('./images/logo.png');
+    imagecopymerge($image, $wmk, $x, $y, 0, 0, $wmk_width, $wmk_height, 20);
+    imagedestroy($wmk);
+  }
 
 
   imagejpeg($image, $dir . '/' . $_POST['id'] . '.jpg', 100);
@@ -246,6 +256,11 @@ if ($_POST['submit'] == 'Save') {
             echo ' checked="checked"';
           }
           echo '>Embed caption in image?';
+          echo '<br/><br/><input type="checkbox" name="emb_logo"';
+          if(isset($_POST['emb_logo'])) {
+            echo ' checked="checked"';
+          }
+          echo '>Embed watermarked logo in image?';
         ?>
         <input type="submit" value="Preview" name="submit">
         <br />

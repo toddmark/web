@@ -35,6 +35,19 @@ if (isset($_GET['capt'])) {
   imagettftext($image, 24, 0 ,20, 40, 17, $font, $_GET['capt']);
 }
 
+//add the logo watermark if requested
+if(isset($_GET['logo'])) {
+  // determine x and y position to center watermark
+  list($width, $height) = getimagesize($dir . '/' .$_GET['id'] . '.jpg');
+  list($wmk_width, $wmk_height) = getimagesize('./images/logo.png');
+  $x = ($width - $wmk_width) / 2;
+  $y = ($height - $wmk_height) / 2;
+
+  $wmk = imagecreatefrompng('./images/logo.png');
+  imagecopymerge($image, $wmk, $x, $y, 0, 0, $wmk_width, $wmk_height, 20);
+  imagedestroy($wmk);
+}
+
 // var_dump($image);
 // show the image
 header('Content-Type: image/jpeg');
