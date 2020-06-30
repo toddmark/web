@@ -183,9 +183,12 @@ if ($_POST['submit'] == 'Save') {
       if(isset($_POST['emb_caption'])) {
         $imagename .= '&capt=' . urlencode($image_caption);
       }
+      if(isset($_POST['emb_logo'])) {
+        $imagename .= '&logo=1';
+      }
     }
     ?>
-    <img src="<?php echo $imagename; ?>" alt="">
+    <img style="width: 300px; float: left;" src="<?php echo $imagename; ?>" alt="">
     <table>
       <!-- <tr>
         <td>Image saved as:</td>

@@ -44,7 +44,7 @@ if(isset($_GET['logo'])) {
   $y = ($height - $wmk_height) / 2;
 
   $wmk = imagecreatefrompng('./images/logo.png');
-  imagecopymerge($image, $wmk, $x, $y, 0, 0, $wmk_width, $wmk_height, 20);
+  imagecopymerge($image, $wmk, $x, $y, 0, 0, $wmk_width, $wmk_height, 50);
   imagedestroy($wmk);
 }
 
