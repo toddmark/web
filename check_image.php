@@ -5,6 +5,9 @@ mysqli_select_db($db, 'moviesite') or die(mysqli_error($db));
 // change this path to match your images directory
 $dir = './images';
 
+// change this path to match your thumbnail directory
+$thumbdir = './thumbs';
+
 //change this path to match your fonts directory and the desired font
 putenv('GDFONTPATH=' . 'C:/Windows/Fonts');
 $font = 'Arial';
@@ -43,7 +46,8 @@ if ($_POST['submit'] == 'Upload') {
 
   $image_caption = $_POST['caption'];
   $image_username = $_POST['username'];
-  $image_date = date("Y-m-d");
+  $image_date = date("Y-m-d H:i:s");
+  var_dump($image_date);
   list($width, $height, $type, $attr) = getimagesize($_FILES['uploadfile']['tmp_name']);
 
   switch ($type) {
@@ -88,6 +92,17 @@ if ($_POST['submit'] == 'Upload') {
   $image_id = $last_id;
 
   imagejpeg($image, $dir . '/' . $image_id . '.jpg');
+
+  //set the dimensions for the thumbnail
+  $thumb_width = $width * 0.1;
+  $thumb_height = $height * 0.1;
+
+  //create the thumbnail
+  $thumb = imagecreatetruecolor($thumb_width, $thumb_height);
+  imagecopyresampled($thumb, $image, 0,0,0,0,$thumb_width,$thumb_height, $width, $height);
+  imagejpeg($thumb, $thumbdir . '/' . $image_id .'.jpg', 100);
+  imagedestroy($thumb);
+
   imagedestroy($image);
 } else {
   $query = 'SELECT image_id, image_caption, image_username, image_date FROM image WHERE image_id=' . $_POST['id'];
