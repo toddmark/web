@@ -26,6 +26,13 @@
   ?> Movie</title>
 </head>
 <body>
+  <?php
+    if(isset($_GET['error'])) {
+      echo '<h5 style="color: #9d0000;">';
+      echo $_GET['error'];
+      echo '<h5>';
+    }
+  ?>
   <form action="commit.php?action=<?php echo $_GET['action']; ?>&type=movie" method="post">
     <table>
       <tr>
