@@ -18,6 +18,9 @@ mysqli_select_db($db, 'moviesite') or die(mysqli_error($db));
 </head>
 
 <body>
+<?php
+  echo error_reporting();
+?>
   <table width="100%">
     <tr>
       <th colspan="2">Movies<a href="movie.php?action=add">[ADD]</a></th>
