@@ -2,7 +2,27 @@
   require 'db.inc.php';
   $db = mysqli_connect(MYSQL_HOST, MYSQL_USER, MYSQL_PASSWORD) or die('wow error');
 
+  $checkdb_exists = false;
+
+  $query = 'SHOW DATABASES';
+
+  $result = mysqli_query($db, $query);
+
+  while ($row = mysqli_fetch_assoc($result)) {
+    if (in_array('comicbook_fansite', $row)) {
+      $checkdb_exists = true;
+    }
+  }
+
+
+
+
+  if(!$checkdb_exists) {
+    $query = 'CREATE DATABASE comicbook_fansite';
+    mysqli_query($db, $query);
+  }
   mysqli_select_db($db, 'comicbook_fansite');
+
 
   // create the comic_character table
   $query = 'CREATE TABLE IF NOT EXISTS comic_character(
@@ -70,4 +90,3 @@
   mysqli_query($db, $query) or die(mysqli_error($db));
 
   echo 'Done';
-?>
