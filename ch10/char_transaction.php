@@ -63,6 +63,13 @@
       $redirect = 'list_characters.php';
     break;
 
+    case 'Delete Character':
+
+    break;
+
+    case 'Edit Character':
+    break;
+
     case 'Delete Selected Powers':
       if(!empty($_POST['powers'])) {
         // escape incoming values to protect database -- they should be numeric values, but just to be safe
