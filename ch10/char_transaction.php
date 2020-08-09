@@ -41,33 +41,63 @@
       $character_id = mysqli_insert_id($db);
       if(!empty($_POST['powers'])) {
         $values = array();
-        foreach ($_POST['powers'] as $power_id) {
+        foreach($_POST['powers'] as $power_id) {
           $values[] = sprintf('(%d, %d)', $character_id, $power_id);
         }
-
-        $query = 'INSERT IGNORE INTO comic_character_power
-            (character_id, power_id)
-          VALUES ' .
-            implode(',',$values);
+        $query = 'INSERT IGNORE INTO comic_character_power(character_id, power_id)
+          VALUES '. implode(',', $values);
         mysqli_query($db, $query) or die(mysqli_error($db));
       }
+
       if(!empty($_POST['rivalries'])) {
         $values = array();
-        foreach ($_POST['rivalries'] as $rival_id) {
+        foreach($_POST['rivalries'] as $rival_id) {
           $values[] = sprintf('(%d, %d)', $character_id, $rival_id);
         }
 
-        // aligment will affect column order
+        // alignment will affect column order
         $columns = ($alignment = 'good') ? '(hero_id, villain_id)' : '(villain_id, hero_id)';
-        $query = 'INSERT IGNORE INTO comic_rivalry' . $columns . '
-          VALUES
-            ' . implode(',', $values);
+        $query = 'INSERT IGNORE INTO comic_rivalry' . $columns .'VALUES' . $implode(',', $values);
         mysqli_query($db, $query) or die(mysqli_error($db));
       }
       $redirect = 'list_characters.php';
     break;
 
-    case 'Delete Character':
-      // make sure character_id is a number just to be safe
+    case 'Delete Selected Powers':
+      if(!empty($_POST['powers'])) {
+        // escape incoming values to protect database -- they should be numeric values, but just to be safe
+        $powers = implode(',', $_POST['powers']);
+        $powers = mysqli_real_escape_string($powers, $db);
+
+        // delete powers
+        $query = 'DELETE FROM comic_power WHERE
+          power_id IN ('. $powers .')';
+        mysqli_query($db, $query) or dir(mysqli_error($db));
+
+        $query = 'DELETE FROM comic_character_power
+          WHERE power_id IN (' . $powers .')';
+        mysqli_query($db, $query) or die(mysqli_error($db));
+      }
+
+      $redirect = 'edit_power.php';
     break;
+
+    case 'Add New Power':
+      // trim and check power to prevent adding blank values
+
+      $power = trim($_POST['new_power']);
+      if($power != '') {
+        $power = mysqli_real_escape_string($db, $power);
+
+        // create new power
+        $query = 'INSERT IGNORE INTO comic_power(power_id, power)
+          VALUES (NULL, "' . $power . '")';
+        mysqli_query($db, $query) or die(mysqli_error($db));
+      }
+      $redirect = 'edit_power.php';
+    break;
+    default:
+    $redirect = 'list_characters.php';
   }
+
+  header('Location:'. $redirect);
